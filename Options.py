@@ -69,11 +69,9 @@ class Bond():
 # Strategy (A)
 call_40_long = CallOption(K=40, position='long')
 bond_40_long = Bond(K=40, position='long')
-
 xx = np.linspace(0,100,101)
 
 plt.title("(A) Payoff at option expiration")
-
 plt.gca().spines['top'].set_visible(False)
 plt.gca().spines['right'].set_visible(False)
 plt.gca().spines['bottom'].set_position(('data',0))
@@ -84,7 +82,6 @@ plt.plot(xx, call_40_long.payoff()+40.3, 'k')
 
 plt.xlim([0,100])
 plt.ylim([-10,80])
-
 plt.xticks([])
 plt.yticks([0])
 
@@ -93,3 +90,5 @@ plt.text(-5, 40, "K", fontdict={'size':15})
 plt.savefig("Strategy (A).png")
 plt.show()
 
+
+# Strategy (B)
