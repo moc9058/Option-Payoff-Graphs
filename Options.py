@@ -51,7 +51,7 @@ class Asset():
         else:
             return -xx
 
-class Debt():
+class Bond():
     def __init__(self,K=40, position='long', value_range=100):
         self.debt = K
         assert position.lower() in ['long','short'], "You're in either long or short position."
@@ -59,25 +59,37 @@ class Debt():
         self.value_range = value_range
     
     def payoff(self):
-        xx = np.ones(self.value_range)*self.debt
+        xx = np.ones(self.value_range+1)*self.debt
         if self.position == 'long':
             return xx
         else:
             return -xx
 
-c_long = CallOption(position='long')
-c_short = CallOption(position='short')
 
-p_long = PutOption(position='long')
-p_short = PutOption(position='short')
+# Strategy (A)
+call_40_long = CallOption(K=40, position='long')
+bond_40_long = Bond(K=40, position='long')
 
-asset_long = Asset(position='long')
-asset_short = Asset(position='short')
+xx = np.linspace(0,100,101)
 
-debt_long = Debt(position='long')
-debt_short = Debt(position='short')
+plt.title("(A) Payoff at option expiration")
 
-lst = [c_long, c_short, p_long, p_short, asset_long, asset_short, debt_long, debt_short]
-for obj in lst:
-    print(obj.payoff())
-    print()
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['bottom'].set_position(('data',0))
+
+plt.plot(xx, call_40_long.payoff()+0.2, 'r--')
+plt.plot(xx, bond_40_long.payoff(), 'b--')
+plt.plot(xx, call_40_long.payoff()+40.3, 'k')
+
+plt.xlim([0,100])
+plt.ylim([-10,80])
+
+plt.xticks([])
+plt.yticks([0])
+
+plt.text(40, -7, "K", fontdict={'size':15})
+plt.text(-5, 40, "K", fontdict={'size':15})
+plt.savefig("Strategy (A).png")
+plt.show()
+
