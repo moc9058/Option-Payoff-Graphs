@@ -2,15 +2,16 @@ import numpy as np
 import matplotlib
 
 class Option():
-    def __init__(self, K=60):
+    def __init__(self, K=60, position='long', value_range=100):
         self.exercise = K
-
-class CallOption(Option):
-    def __init__(self, K=60, position='long'):
-        super().__init__(K) 
+        self.value_range = value_range
         assert position.lower() in ['long','short'], "You're in either long or short position."
         self.position = position.lower()
-    
+        
+class CallOption(Option):
+    def __init__(self, K=60, position='long', value_range=100):
+        super().__init__(K=K, position=position, value_range=value_range) 
+        
     def payoff(self):
         xx = np.linspace(0,100,101)
         if self.position == 'long':
@@ -23,10 +24,8 @@ class CallOption(Option):
         return xx
 
 class PutOption(Option):
-    def __init__(self, K=60, position='long'):
-        super().__init__(K)
-        assert position.lower() in ['long','short'], "You're in either long or short position."
-        self.position = position.lower()
+    def __init__(self, K=60, position='long', value_range=100):
+        super().__init__(K=K, position=position, value_range=value_range) 
     
     def payoff(self):
         xx = np.linspace(0,100,101)
@@ -38,6 +37,14 @@ class PutOption(Option):
             xx[xx > self.exercise] = 0
             
         return xx
+
+class Asset():
+    def __init__(self, position='long', value_range=100):
+        assert position.lower() in ['long','short'], "You're in either long or short position."
+        self.position = position.lower()
+    
+    def payoff(self):
+        return np.linspace(0,100,101)
 
 c_long = CallOption(position='long')
 c_short = CallOption(position='short')
